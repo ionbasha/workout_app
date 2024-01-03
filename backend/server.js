@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
-const routes = require('./routes/workouts')
+const routesWorkout = require('./routes/workouts')
 const mongoose = require('mongoose')
 
 const app = express()
@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/api/workouts',routes)
+app.use('/api/workouts',routesWorkout)
 
 // connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
