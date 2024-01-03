@@ -1,6 +1,5 @@
 const Workout = require('../models/workout_schema')
 const mongoose = require('mongoose')
-const { response } = require('express')
 
 // GET all
 const getAllWorkouts = async (req, res) => {
@@ -76,7 +75,7 @@ const updateWorkout = async (req, res) => {
         return res.status(404).json("No such workout")
     }
 
-    response.status(200)
+    response.status(200).json(`Updated ${id}`)
      
 }
 
