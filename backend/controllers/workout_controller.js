@@ -1,5 +1,6 @@
 const Workout = require('../models/workout_schema')
 const mongoose = require('mongoose')
+const { response } = require('express')
 
 // GET all
 const getAllWorkouts = async (req, res) => {
@@ -33,7 +34,7 @@ const newWorkout = async (req, res) => {
     
     try {
         const newWorkout = await Workout.create({name, reps, sets})
-        res.status(200).json(newWorkout )
+        res.status(200).json(newWorkout)
     }
     catch(e) {
         res.status(400).json({error: e.message})
@@ -46,7 +47,7 @@ const deleteWorkout = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json("No workout exists")
+        return res.status(404).json("No workout exists")    
     }
 
     const workout = await Workout.findOneAndDelete({ _id: id })
@@ -55,16 +56,36 @@ const deleteWorkout = async (req, res) => {
         return res.status(404).json("No such workout")
     }
 
-    res.status(200).json(workout)
+    res.status(200).json(`Deleted ${id}`)
 }
 
 
 // PATCH an existing workout
+const updateWorkout = async (req, res) => {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json("No workout exists")
+    }
+
+    const workout = await Workout.findOneAndUpdate({_id: id}, {
+        ...req.body
+    })
+
+    if(!workout) {
+        return res.status(404).json("No such workout")
+    }
+
+    response.status(200)
+     
+}
 
 
 
 module.exports = {
     newWorkout,
     getAllWorkouts,
-    getOneWorkout
+    getOneWorkout,
+    updateWorkout,
+    deleteWorkout
 }
